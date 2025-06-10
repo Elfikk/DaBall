@@ -9,13 +9,6 @@ CollisionSurface = {
     LEFT = {}
 }
 
-PossibleCollisions = {
-    TOP_LEFT = {negative = CollisionSurface.LEFT, positive = CollisionSurface.TOP},
-    TOP_RIGHT = {negative = CollisionSurface.TOP, positive = CollisionSurface.RIGHT},
-    BOTTOM_RIGHT = {negative = CollisionSurface.RIGHT, positive = CollisionSurface.BOTTOM},
-    BOTTOM_LEFT = {negative = CollisionSurface.BOTTOM, positive = CollisionSurface.LEFT}
-}
-
 function Collider:new()
     local o = {}
     setmetatable(o, self)
@@ -49,45 +42,41 @@ end
 function Collider:collisionSurface(ball, box)
 
     local bounds = box:getBounds()
-    local prevPos = ball:getPosLast()
+    local currentPos = ball:getPos()
+    local velocity = ball:getVel()
 
-    local orientiation = PossibleCollisions.BOTTOM_LEFT
-    local closestPos = PositionVector:new(bounds.x0, bounds.y0)
-
-    -- This is the worst code I've written in years
-    if prevPos.x <= bounds.x0 then
-        if prevPos.y <= bounds.y1 then
-            orientiation = PossibleCollisions.TOP_LEFT
-            closestPos = PositionVector:new(bounds.x0, bounds.y1)
-        elseif prevPos.y <= bounds.y0 then
-            return CollisionSurface.LEFT
-        else
-            orientiation = PossibleCollisions.BOTTOM_LEFT
-            closestPos = PositionVector:new(bounds.x0, bounds.y0)
+    local function critTime(bound, pos, vel)
+        if vel == 0 then
+            return 10
         end
-    elseif prevPos.x < bounds.x1 then
-        if prevPos.y < bounds.y1 then
-            return CollisionSurface.TOP
-        else
-            return CollisionSurface.BOTTOM
-        end
-    else
-        if prevPos.y <= bounds.y1 then
-            orientiation = PossibleCollisions.TOP_RIGHT
-            closestPos = PositionVector:new(bounds.x1, bounds.y1)
-        elseif prevPos.y <= bounds.y0 then
-            return CollisionSurface.RIGHT
-        else
-            orientiation = PossibleCollisions.BOTTOM_RIGHT
-            closestPos = PositionVector:new(bounds.x1, bounds.y0)
-        end
+        return (pos - bound) / vel
     end
 
-    local vel = ball:getVel()
-    local crossProduct = vel:cross(closestPos - prevPos)
+    local smallestTime = -100000
+    local surface = CollisionSurface.TOP
 
-    if crossProduct < 0 then
-        return orientiation.negative
+    local topTime = critTime(currentPos.y, bounds.y1, velocity.y)
+    if smallestTime < topTime and topTime <= 0 then
+        smallestTime = topTime
+        surface = CollisionSurface.TOP
     end
-    return orientiation.positive
+
+    local bottomTime = critTime(currentPos.y, bounds.y0, velocity.y)
+    if smallestTime < bottomTime and bottomTime <= 0 then
+        smallestTime = bottomTime
+        surface = CollisionSurface.BOTTOM
+    end
+
+    local rightTime = critTime(currentPos.x, bounds.x1, velocity.x)
+    if smallestTime < rightTime and rightTime <= 0 then
+        smallestTime = rightTime
+        surface = CollisionSurface.RIGHT
+    end
+
+    local leftTime = critTime(currentPos.x, bounds.x0, velocity.x)
+    if smallestTime < leftTime and leftTime <= 0 then
+        smallestTime = leftTime
+        surface = CollisionSurface.LEFT
+    end
+    return surface
 end
