@@ -13,3 +13,11 @@ end
 function Box:getBounds()
     return self.bounds
 end
+
+function Box:inside(x, y)
+    return (self.x0 < x) and (self.x1 > x) and (self.y0 < y) and (self.y1 > y)
+end
+
+function Box:below(y)
+    return y < self.y0
+end
