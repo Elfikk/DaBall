@@ -26,6 +26,8 @@ Location = {
 }
 
 function FiringContext:new()
+    FiringContext.__index = FiringContext
+    setmetatable(FiringContext, {__index = Context})
     local o = Context:new()
     setmetatable(o, self)
     self.__index = self
