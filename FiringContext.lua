@@ -10,10 +10,11 @@ FiringContext = {
     activeCount = 0,
     targetBalls = 1,
     timesteps = 10,
-    ballStepInterval = 5,
+    ballStepInterval = 15,
     stepsToNextBall = 1,
     firingPosition = PositionVector:new(0, 0), -- This should be in grid units
-    firingVelocity = PositionVector:new(0, 1) -- This should be in grid units
+    firingVelocity = PositionVector:new(0, 1), -- This should be in grid units
+    g = 0.001
 }
 
 -- Want internals to work with the positions of the grid I think, and then be
@@ -63,6 +64,14 @@ function FiringContext:update(grid)
             end
             checkCount = checkCount + gridCollisionCount
         end
+
+        -- Remove any non-valid blocks; really this should be done during
+        -- collisions, but currently we don't do those in time order but in id
+        -- order
+        grid:cleanupBlocks()
+
+        -- Change velocity lmao
+        self:updateVelocities()
     end
 end
 
@@ -128,6 +137,14 @@ function FiringContext:handleGrid(balls)
         end
     end
     return collided, count
+end
+
+function FiringContext:updateVelocities()
+    for id, ball in pairs(self.activeBalls) do
+        local oldVel = ball:getVel()
+        local newVel = oldVel + PositionVector:new(0, -g / self.timesteps)
+        ball:setPos(newVel.x, newVel.y)
+    end
 end
 
 function FiringContext:draw()
