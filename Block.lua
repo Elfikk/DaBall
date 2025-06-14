@@ -16,7 +16,7 @@ end
 
 function Block:decrement()
     self.hitpoints = self.hitpoints - 1
-    return self:valid()
+    return self:isValid()
 end
 
 function Block:isValid()
@@ -27,4 +27,8 @@ function Block:moveVertically(delta_y)
     -- print(self.x0)
     self.bounds.y0 = self.bounds.y0 + delta_y
     self.bounds.y1 = self.bounds.y1 + delta_y
+end
+
+function Block:getHitpoints()
+    return self.hitpoints
 end

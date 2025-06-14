@@ -69,12 +69,11 @@ function FiringContext:update(grid)
             -- print("Collision checks", gridCollisionCount)
             checkCount = checkCount + gridCollisionCount
             -- print(checkCount)
+            -- Remove any non-valid blocks; really this should be done during
+            -- collisions, but currently we don't do those in time order but in id
+            -- order
+            grid:cleanupBlocks()
         end
-
-        -- Remove any non-valid blocks; really this should be done during
-        -- collisions, but currently we don't do those in time order but in id
-        -- order
-        grid:cleanupBlocks()
 
         -- Change velocity lmao
         self:updateVelocities()
@@ -142,6 +141,7 @@ function FiringContext:handleGrid(balls)
             self.collider:handleCollision(self.activeBalls[id], box)
             collided[id] = self.activeBalls[id]
             count = count + 1
+            box:decrement()
         end
     end
     return collided, count
