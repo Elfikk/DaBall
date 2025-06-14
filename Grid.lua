@@ -111,7 +111,10 @@ function Grid:draw()
         for j = 0, self.columns - 1 do
             if self.blocks[i][j] ~= nil then
                 local bounds = self.blocks[i][j]:getBounds()
-                love.graphics.rectangle("line", bounds.x0 * SF, bounds.y1 * SF, (bounds.x1 - bounds.x0) * SF, (bounds.y0 - bounds.y1) * SF)
+                love.graphics.setColor(0, 0.5, 0.5)
+                love.graphics.rectangle("fill", bounds.x0 * SF, bounds.y1 * SF, (bounds.x1 - bounds.x0) * SF, (bounds.y0 - bounds.y1) * SF)
+                love.graphics.setColor(0.8, 0.8, 0.8)
+                love.graphics.print( self.blocks[i][j]:getHitpoints(), bounds.x0 * SF + 0.4 * SF * (bounds.x1 - bounds.x0), bounds.y1 * SF + 0.4 * (bounds.y0 - bounds.y1) * SF)
             end
         end
     end
