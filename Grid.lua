@@ -28,8 +28,8 @@ function Grid:new(rows, columns)
 end
 
 function Grid:blockAt(row, column)
-    assert(row > self.rows or row < 0, "Out of bound row looked up.")
-    assert(column > self.columns or column < 0, "Out of bound column looked up.")
+    assert(row <= self.rows - 1 and row >= 0, "Out of bound row looked up.")
+    assert(column <= self.columns - 1 and column >= 0, "Out of bound column looked up.")
     return self.blocks[row][column]
 end
 
@@ -65,8 +65,8 @@ function Grid:moveBlocks()
         for i = self.rows - 1, 0, -1 do
             self.blocks[i + 1][j] = self.blocks[i][j]
             if self.blocks[i + 1][j] ~= nil then
-                print(i + 1)
-                print(j)
+                -- print(i + 1)
+                -- print(j)
                 self.blocks[i + 1][j]:moveVertically(1)
             end
         end
@@ -104,7 +104,7 @@ function Grid:addBlocks(hitpoints)
     end
 end
 
-SF = 10
+SF = 50
 
 function Grid:draw()
     for i = 0, self.rows - 1 do
@@ -115,4 +115,7 @@ function Grid:draw()
             end
         end
     end
+    love.graphics.setColor(0.8, 0, 0)
+    love.graphics.rectangle("line", 0, 0, self.columns * SF, self.rows * SF)
+    love.graphics.setColor(0.8, 0.8, 0.8)
 end

@@ -1,7 +1,8 @@
 require("Ball")
 require("Box")
-require("Grid")
 require("Collider")
+require("Grid")
+require("FiringContext")
 require("PositionVector")
 
 -- function love.load()
@@ -57,15 +58,28 @@ require("PositionVector")
 
 function love.load()
     grid = Grid:new(10, 8)
+    absoluteFire = FiringContext:new() -- This will need some more parameters in reality
+    startUpdating = false
 end
 
 function love.draw()
     love.graphics.setColor(0.8, 0.8, 0.8)
-    grid:draw()
+    -- grid:draw()
+    absoluteFire:draw(grid)
+end
+
+function love.update()
+    if startUpdating and absoluteFire:isActive() then
+        absoluteFire:update(grid)
+    end
 end
 
 function love.keypressed(key, scancode, isrepeat)
     if key == "space" then
+        absoluteFire:update(grid)
+        startUpdating = true
+    elseif key == "escape" then
         grid:generateNextTurn()
     end
+
 end

@@ -19,7 +19,7 @@ function Block:decrement()
     return self:valid()
 end
 
-function Block:valid()
+function Block:isValid()
     return self.hitpoints > 0
 end
 
