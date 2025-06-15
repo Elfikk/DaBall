@@ -23,7 +23,7 @@ function PositionVector:__div(scale)
 end
 
 function PositionVector:dot(other)
-    return self.x * other.x + self.x * other.y
+    return self.x * other.x + self.y * other.y
 end
 
 function PositionVector:cross(other)
