@@ -1,4 +1,5 @@
 require("Block")
+require("Circle")
 
 Grid = {
     rows = 10,
@@ -20,8 +21,10 @@ function Grid:new(rows, columns)
     -- One extra row; if block in this row, game ended
     for i = 0, rows do
         o.blocks[i] = {}
+        o.powerups[i] = {}
         for j = 0, columns - 1 do
             o.blocks[i][j] = nil
+            o.powerups[i][j] = nil
         end
     end
     return o
@@ -33,18 +36,29 @@ function Grid:blockAt(row, column)
     return self.blocks[row][column]
 end
 
+function Grid:powerupAt(row, column)
+    assert(row <= self.rows - 1 and row >= 0, "Out of bound row looked up.")
+    assert(column <= self.columns - 1 and column >= 0, "Out of bound column looked up.")
+    return self.powerups[row][column]
+end
+
+
 function Grid:getBlock(x, y, min_x, max_x, min_y, max_y)
     local column = math.floor(x / (max_x - min_x) * self.columns)
     local row = math.floor(y / (max_y - min_y) * self.rows)
     return self:blockAt(row, column)
 end
 
-function Grid:cleanupBlocks()
+function Grid:cleanupElements()
     for i = 0, self.rows - 1 do
         for j = 0, self.columns - 1 do
             if self.blocks[i][j] ~= nil then
                 if not self.blocks[i][j]:isValid() then
                     self.blocks[i][j] = nil
+                end
+            elseif self.powerups[i][j] ~= nil then
+                if not self.powerups[i][j]:isValid() then
+                    self.powerups[i][j] = nil
                 end
             end
         end
@@ -52,25 +66,28 @@ function Grid:cleanupBlocks()
 end
 
 function Grid:generateNextTurn(hitpoints)
-    self:moveBlocks()
+    self:moveElementsDown()
     local outcome = self:checkIntegrity()
     if outcome == GameOutcome.CONTINUE then
-        self:addBlocks(hitpoints)
+        local addedBlocks = self:addBlocks(hitpoints)
+        self:addBalls(addedBlocks)
     end
     return outcome
 end
 
-function Grid:moveBlocks()
+function Grid:moveElementsDown()
     for j = 0, self.columns - 1 do
         for i = self.rows - 1, 0, -1 do
             self.blocks[i + 1][j] = self.blocks[i][j]
+            self.powerups[i + 1][j] = self.powerups[i][j]
             if self.blocks[i + 1][j] ~= nil then
-                -- print(i + 1)
-                -- print(j)
                 self.blocks[i + 1][j]:moveVertically(1)
+            elseif self.powerups[i + 1][j] ~= nil then
+                self.powerups[i + 1][j]:moveDown(1)
             end
         end
         self.blocks[0][j] = nil
+        self.powerups[0][j] = nil
     end
 end
 
@@ -90,6 +107,7 @@ function Grid:addBlocks(hitpoints)
         if math.random() < self.probBlock then
             self.blocks[0][j] = Block:new(j, j + 1, 1, 0, 1)
             added = added + 1
+            print("added at", j)
         end
     end
 
@@ -101,6 +119,22 @@ function Grid:addBlocks(hitpoints)
         -- But always leave space for a powerup...
         local col = math.random(0, self.columns - 1)
         self.blocks[0][col] = nil
+    end
+    return added
+end
+
+function Grid:addBalls(addedBlocks)
+    local possibleColumns = self.columns - addedBlocks
+    local addAfter = math.random(0, possibleColumns - 1)
+    for i = 0, self.columns - 1 do
+        if self.blocks[0][i] == nil then
+            if addAfter == 0 then
+                print("added ball at", i)
+                self.powerups[0][i] = Circle:new(i + 0.5, 0.5, 0.25)
+                return
+            end
+            addAfter = addAfter - 1
+        end
     end
 end
 
@@ -115,6 +149,13 @@ function Grid:draw()
                 love.graphics.rectangle("fill", bounds.x0 * SF, bounds.y1 * SF, (bounds.x1 - bounds.x0) * SF, (bounds.y0 - bounds.y1) * SF)
                 love.graphics.setColor(0.8, 0.8, 0.8)
                 love.graphics.print( self.blocks[i][j]:getHitpoints(), bounds.x0 * SF + 0.4 * SF * (bounds.x1 - bounds.x0), bounds.y1 * SF + 0.4 * (bounds.y0 - bounds.y1) * SF)
+            end
+            if self.powerups[i][j] ~= nil then
+                local pos = self.powerups[i][j]:getPos()
+                local radius = self.powerups[i][j]:getRadius()
+                love.graphics.setColor(0, 0.5, 0)
+                love.graphics.circle("fill", pos.x * SF, pos.y * SF, SF * radius)
+                love.graphics.setColor(0.8, 0.8, 0.8)
             end
         end
     end

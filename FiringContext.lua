@@ -15,7 +15,8 @@ FiringContext = {
     stepsToNextBall = 1,
     firingPosition = PositionVector:new(2, 10), -- This should be in grid units
     firingVelocity = PositionVector:new(0.2, -.2) / 10, -- This should be in grid units
-    g = -0.001 / 100
+    g = -0.001 / 100,
+    newBalls = 0
 }
 
 -- Want internals to work with the positions of the grid I think, and then be
@@ -72,7 +73,7 @@ function FiringContext:update(grid)
             -- Remove any non-valid blocks; really this should be done during
             -- collisions, but currently we don't do those in time order but in id
             -- order
-            grid:cleanupBlocks()
+            grid:cleanupElements()
         end
 
         -- Change velocity lmao
@@ -104,10 +105,15 @@ function FiringContext:determineLocations(balls, grid)
     }
     for id, ball in pairs(balls) do
         local ballPos = ball:getPos()
+        local x = ballPos.x
+        local y = ballPos.y
         local ballId = ball:getId()
-        if self.boundingBox:inside(ballPos.x, ballPos.y) then
-            locations[Location.GRID][ballId] = grid:blockAt(math.floor(ballPos.y), math.floor(ballPos.x))
-        elseif self.boundingBox:below(ballPos.y) then
+        if self.boundingBox:inside(x, y) then
+            locations[Location.GRID][ballId] = {
+                block = grid:blockAt(math.floor(y), math.floor(x)),
+                powerup = grid:powerupAt(math.floor(y), math.floor(x))
+            }
+        elseif self.boundingBox:below(y) then
             locations[Location.BELOW][ballId] = ball
         else
             locations[Location.OUT_OF_BOUNDS][ballId] = ball
@@ -136,12 +142,17 @@ end
 function FiringContext:handleGrid(balls)
     local collided = {}
     local count = 0
-    for id, box in pairs(balls) do
-        if box ~= nil then
-            self.collider:handleCollision(self.activeBalls[id], box)
+    for id, elements in pairs(balls) do
+        if elements.block ~= nil then
+            self.collider:handleCollision(self.activeBalls[id], elements.block)
             collided[id] = self.activeBalls[id]
             count = count + 1
-            box:decrement()
+            elements.block:decrement()
+        elseif elements.powerup ~= nil then
+            local hit = elements.powerup:inside(self.activeBalls[id]:getPos())
+            if hit then
+                self.newBalls = self.newBalls + 1
+            end
         end
     end
     return collided, count
