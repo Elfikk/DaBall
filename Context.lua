@@ -14,6 +14,15 @@ end
 function Context:draw(grid)
 end
 
+function Context:mousemoved()
+end
+
+function Context:mousepressed()
+end
+
+function Context:mousereleased()
+end
+
 function Context:isActive()
     return false
 end
