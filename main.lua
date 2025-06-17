@@ -2,8 +2,10 @@ require("Ball")
 require("Box")
 require("Collider")
 require("Grid")
+require("GridViewportAdapter")
 require("FiringContext")
 require("PositionVector")
+require("TargetContext")
 
 -- function love.load()
 --     Balls = {}
@@ -59,13 +61,16 @@ require("PositionVector")
 function love.load()
     grid = Grid:new(10, 8)
     absoluteFire = FiringContext:new() -- This will need some more parameters in reality
+    targettingLmao = TargetContext:new(400, 550)
     startUpdating = false
+    adapter = GridViewportAdapter:new(8, 10, 200, 600, 50, 550)
 end
 
 function love.draw()
     love.graphics.setColor(0.8, 0.8, 0.8)
-    -- grid:draw()
-    absoluteFire:draw(grid)
+    grid:draw(adapter)
+    absoluteFire:draw(adapter)
+    targettingLmao:draw()
 end
 
 function love.update()
@@ -81,5 +86,16 @@ function love.keypressed(key, scancode, isrepeat)
     elseif key == "escape" then
         grid:generateNextTurn()
     end
+end
 
+function love.mousemoved(x, y, dx, dy, istouch)
+    targettingLmao:mousemoved(x, y, dx, dy, istouch)
+end
+
+function love.mousepressed(x, y, dx, dy, istouch)
+    targettingLmao:mousepressed(x, y, dx, dy, istouch)
+end
+
+function love.mousereleased(x, y, dx, dy, istouch)
+    targettingLmao:mousereleased(x, y, dx, dy, istouch)
 end

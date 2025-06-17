@@ -11,11 +11,11 @@ FiringContext = {
     activeCount = 0,
     targetBalls = 5,
     timesteps = 10,
-    ballStepInterval = 500,
+    ballStepInterval = 250,
     stepsToNextBall = 1,
     firingPosition = PositionVector:new(2, 10), -- This should be in grid units
-    firingVelocity = PositionVector:new(0.2, -.2) / 10, -- This should be in grid units
-    g = -0.001 / 100,
+    firingVelocity = PositionVector:new(0.2, -.2) / 5, -- This should be in grid units
+    g = -0.001 / 50,
     newBalls = 0
 }
 
@@ -167,10 +167,10 @@ function FiringContext:updateVelocities()
     end
 end
 
-function FiringContext:draw(grid)
-    grid:draw()
+function FiringContext:draw(adapter)
     for id, ball in pairs(self.activeBalls) do
-        love.graphics.circle("fill", ball.posNow.x * SF, ball.posNow.y * SF, 5)
+        local viewportPos = adapter:gridToViewportCoordinate(ball.posNow.x, ball.posNow.y)
+        love.graphics.circle("fill", viewportPos.x, viewportPos.y, 3)
     end
 end
 

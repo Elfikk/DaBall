@@ -11,7 +11,7 @@ end
 function Context:update(grid)
 end
 
-function Context:draw(grid)
+function Context:draw(adapter)
 end
 
 function Context:mousemoved()

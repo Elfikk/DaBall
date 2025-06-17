@@ -138,28 +138,32 @@ function Grid:addBalls(addedBlocks)
     end
 end
 
-SF = 50
-
-function Grid:draw()
+function Grid:draw(adapter)
     for i = 0, self.rows - 1 do
         for j = 0, self.columns - 1 do
             if self.blocks[i][j] ~= nil then
                 local bounds = self.blocks[i][j]:getBounds()
+                local viewportPos = adapter:gridToViewportCoordinate(bounds.x0, bounds.y1)
+                local width = adapter:gridToViewportWidth(bounds.x1 - bounds.x0)
+                local height = adapter:gridToViewportWidth(bounds.y0 - bounds.y1)
                 love.graphics.setColor(0, 0.5, 0.5)
-                love.graphics.rectangle("fill", bounds.x0 * SF, bounds.y1 * SF, (bounds.x1 - bounds.x0) * SF, (bounds.y0 - bounds.y1) * SF)
+                love.graphics.rectangle("fill", viewportPos.x, viewportPos.y, width, height)
                 love.graphics.setColor(0.8, 0.8, 0.8)
-                love.graphics.print( self.blocks[i][j]:getHitpoints(), bounds.x0 * SF + 0.4 * SF * (bounds.x1 - bounds.x0), bounds.y1 * SF + 0.4 * (bounds.y0 - bounds.y1) * SF)
+                love.graphics.print( self.blocks[i][j]:getHitpoints(), viewportPos.x + 0.4 * width, viewportPos.y + 0.4 * height)
             end
             if self.powerups[i][j] ~= nil then
                 local pos = self.powerups[i][j]:getPos()
-                local radius = self.powerups[i][j]:getRadius()
+                local viewportPos = adapter:gridToViewportCoordinate(pos.x, pos.y)
+                local radius = adapter:gridToViewportWidth(self.powerups[i][j]:getRadius())
                 love.graphics.setColor(0, 0.5, 0)
-                love.graphics.circle("fill", pos.x * SF, pos.y * SF, SF * radius)
+                love.graphics.circle("fill", viewportPos.x, viewportPos.y, radius)
                 love.graphics.setColor(0.8, 0.8, 0.8)
             end
         end
     end
+    local minBoundaries = adapter:gridToViewportCoordinate(0, 0)
+    local maxBoundaries = adapter:gridToViewportCoordinate(self.columns, self.rows)
     love.graphics.setColor(0.8, 0, 0)
-    love.graphics.rectangle("line", 0, 0, self.columns * SF, self.rows * SF)
+    love.graphics.rectangle("line", minBoundaries.x, minBoundaries.y, maxBoundaries.x - minBoundaries.x, maxBoundaries.y - minBoundaries.y)
     love.graphics.setColor(0.8, 0.8, 0.8)
 end
