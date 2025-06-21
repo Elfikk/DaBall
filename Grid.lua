@@ -94,7 +94,7 @@ end
 function Grid:checkIntegrity()
     -- Check max row (default 11) for any blocks
     for j = 0, self.columns - 1 do
-        if self.blocks[self.rows][j] ~= nil then
+        if self.blocks[self.rows - 1][j] ~= nil then
             return GameOutcome.LOSS
         end
     end
