@@ -105,16 +105,16 @@ function Grid:addBlocks(hitpoints)
     local added = 0
     for j = 0, self.columns - 1 do
         if math.random() < self.probBlock then
-            self.blocks[0][j] = Block:new(j, j + 1, 1, 0, 1)
+            self.blocks[0][j] = Block:new(j, j + 1, 1, 0, hitpoints)
             added = added + 1
-            print("added at", j)
+            -- -- print("added at", j)
         end
     end
 
     if added == 0 then
         -- Always have at least one
         local col = math.random(0, self.columns - 1)
-        self.blocks[0][col] = Block:new(col, col + 1, 1, 0)
+        self.blocks[0][col] = Block:new(col, col + 1, 1, 0, hitpoints)
     elseif added == self.columns then
         -- But always leave space for a powerup...
         local col = math.random(0, self.columns - 1)
@@ -129,7 +129,7 @@ function Grid:addBalls(addedBlocks)
     for i = 0, self.columns - 1 do
         if self.blocks[0][i] == nil then
             if addAfter == 0 then
-                print("added ball at", i)
+                -- -- print("added ball at", i)
                 self.powerups[0][i] = Circle:new(i + 0.5, 0.5, 0.25)
                 return
             end

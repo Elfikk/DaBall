@@ -14,15 +14,18 @@ end
 function Context:draw(adapter)
 end
 
-function Context:mousemoved()
+function Context:mousemoved(x, y, dx, dy, istouch)
 end
 
-function Context:mousepressed()
+function Context:mousepressed(x, y, button, istouch, presses)
 end
 
-function Context:mousereleased()
+function Context:mousereleased(x, y, button, istouch, presses)
 end
 
 function Context:isActive()
-    return false
+    return true
+end
+
+function Context:reset()
 end

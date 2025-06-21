@@ -25,7 +25,7 @@ function GridViewportAdapter:gridToViewportCoordinate(grid_col, grid_row)
     local width_scale = (viewportBounds.x1 - viewportBounds.x0) / (gridBounds.x1 - gridBounds.x0)
     local x = width_scale * (grid_col - gridBounds.x0) + viewportBounds.x0
     local y = (viewportBounds.y1 - viewportBounds.y0) * (grid_row - gridBounds.y0) / (gridBounds.y1 - gridBounds.y0) + viewportBounds.y0
-    -- print(grid_col, grid_row, "->", width_scale, x, y)
+    -- -- print(grid_col, grid_row, "->", width_scale, x, y)
     return PositionVector:new(x, y)
 end
 

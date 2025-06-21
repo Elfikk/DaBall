@@ -21,10 +21,10 @@ function Circle:inside(otherPos)
     local diffSq = diffPos:dot(diffPos)
     local isInside = diffSq < self.radius * self.radius
 
-    print(self.position.x, self.position.y)
-    print(otherPos.x, otherPos.y)
-    print(diffSq)
-    print("")
+    -- -- print(self.position.x, self.position.y)
+    -- -- print(otherPos.x, otherPos.y)
+    -- -- print(diffSq)
+    -- -- print("")
 
     if isInside then
         self.hitpoints = self.hitpoints - 1
