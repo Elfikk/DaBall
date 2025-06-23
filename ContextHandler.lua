@@ -26,7 +26,7 @@ function ContextHandler:new(cols, rows, viewportX0, viewportX1, viewportY0, view
     self.grid = Grid:new(rows, cols)
     self.contexts[Contexts.TARGET] = TargetContext:new((viewportX1 - viewportX0) / 2 + viewportX0, viewportY1)
     self.contexts[Contexts.FIRE] = FiringContext:new(cols, rows)
-    self.grid:generateNextTurn(1)
+    self.grid:generateNextTurn(self.turns)
     self.currentContextType = Contexts.TARGET
     return o
 end
