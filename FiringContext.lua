@@ -14,9 +14,9 @@ FiringContext = {
     timesteps = 10,
     ballStepInterval = 250,
     stepsToNextBall = 1,
-    firingPosition = PositionVector:new(2, 10), -- This should be in grid units
-    firingVelocity = PositionVector:new(0.2, -.2) / 5, -- This should be in grid units
-    g = -0.001 / 50,
+    firingPosition = PositionVector:new(0, 0), -- This should be in grid units
+    firingVelocity = PositionVector:new(0, 0), -- This should be in grid units
+    g = -1 / 50000,
     newBalls = 0,
     nextFiringPosition = nil
 }
