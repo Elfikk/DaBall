@@ -1,5 +1,6 @@
 require("Block")
 require("Circle")
+require("string")
 
 Grid = {
     rows = 10,
@@ -105,7 +106,7 @@ function Grid:addBlocks(hitpoints)
     local added = 0
     for j = 0, self.columns - 1 do
         if math.random() < self.probBlock then
-            self.blocks[0][j] = Block:new(j, j + 1, 1, 0, hitpoints)
+            self.blocks[0][j] = Block:new(j, j + 1, 0, 1, hitpoints)
             added = added + 1
             -- -- print("added at", j)
         end
@@ -114,7 +115,7 @@ function Grid:addBlocks(hitpoints)
     if added == 0 then
         -- Always have at least one
         local col = math.random(0, self.columns - 1)
-        self.blocks[0][col] = Block:new(col, col + 1, 1, 0, hitpoints)
+        self.blocks[0][col] = Block:new(col, col + 1, 0, 1, hitpoints)
     elseif added == self.columns then
         -- But always leave space for a powerup...
         local col = math.random(0, self.columns - 1)
@@ -146,10 +147,18 @@ function Grid:draw(adapter)
                 local viewportPos = adapter:gridToViewportCoordinate(bounds.x0, bounds.y1)
                 local width = adapter:gridToViewportWidth(bounds.x1 - bounds.x0)
                 local height = adapter:gridToViewportWidth(bounds.y0 - bounds.y1)
-                love.graphics.setColor(0, 0.5, 0.5)
+                love.graphics.setColor(0.5, 0.5, 0.5)
                 love.graphics.rectangle("fill", viewportPos.x, viewportPos.y, width, height)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", viewportPos.x, viewportPos.y, width, height)
                 love.graphics.setColor(0.8, 0.8, 0.8)
-                love.graphics.print( self.blocks[i][j]:getHitpoints(), viewportPos.x + 0.4 * width, viewportPos.y + 0.4 * height)
+
+                -- Draw Hitpoints Counter
+                local font = love.graphics.getFont()
+                local hpString = self.blocks[i][j]:getHitpoints()
+                local textWidth = font:getWidth(hpString)
+                local offset = (width - textWidth) / 2
+                love.graphics.print(hpString, viewportPos.x + offset, viewportPos.y + 0.6 * height)
             end
             if self.powerups[i][j] ~= nil then
                 local pos = self.powerups[i][j]:getPos()
