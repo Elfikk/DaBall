@@ -15,19 +15,21 @@ ContextHandler = {
     grid = Grid,
     coordinateAdapter = GridViewportAdapter,
     contexts = {[Contexts.BASE] = Context},
-    turns = 1
+    turns = 1,
+    gridSum = 0,
 }
 
 function ContextHandler:new(cols, rows, viewportX0, viewportX1, viewportY0, viewportY1)
     local o = {}
     setmetatable(o, self)
     self.__index = self
-    self.coordinateAdapter = GridViewportAdapter:new(cols, rows, viewportX0, viewportX1, viewportY0, viewportY1)
-    self.grid = Grid:new(rows, cols)
-    self.contexts[Contexts.TARGET] = TargetContext:new((viewportX1 - viewportX0) / 2 + viewportX0, viewportY1)
-    self.contexts[Contexts.FIRE] = FiringContext:new(cols, rows)
-    self.grid:generateNextTurn(self.turns)
-    self.currentContextType = Contexts.TARGET
+    o.coordinateAdapter = GridViewportAdapter:new(cols, rows, viewportX0, viewportX1, viewportY0, viewportY1)
+    o.grid = Grid:new(rows, cols)
+    o.contexts[Contexts.TARGET] = TargetContext:new((viewportX1 - viewportX0) / 2 + viewportX0, viewportY1)
+    o.contexts[Contexts.FIRE] = FiringContext:new(cols, rows)
+    o.grid:generateNextTurn(o.turns)
+    o.gridSum = o.grid:getAddedHitpoints()
+    o.currentContextType = Contexts.TARGET
     return o
 end
 
@@ -39,6 +41,9 @@ end
 function ContextHandler:update()
     local currentContext = self.contexts[self.currentContextType]
     currentContext:update(self.grid)
+    if self.currentContextType == Contexts.FIRE then
+        self.gridSum = self.gridSum - currentContext:getHitBlockCount()
+    end
     -- Incorporate transition here. Should a context know when it's finished? isActive()?
     if not currentContext:isActive() then
         -- print("not active")
@@ -60,6 +65,8 @@ function ContextHandler:update()
             self.turns = self.turns + 1
             if self.grid:generateNextTurn(self.turns) == GameOutcome.LOSS then
                 self.currentContextType = Contexts.BASE
+            else
+                self.gridSum = self.gridSum + self.grid:getAddedHitpoints()
             end
         end
     end
@@ -75,4 +82,12 @@ end
 
 function ContextHandler:mousereleased(x, y, button, istouch, presses)
     self.contexts[self.currentContextType]:mousepressed(x, y, button, istouch, presses)
+end
+
+function ContextHandler:getTurns()
+    return self.turns
+end
+
+function ContextHandler:getGridSum()
+    return self.gridSum
 end

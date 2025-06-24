@@ -18,7 +18,8 @@ FiringContext = {
     firingVelocity = PositionVector:new(0, 0), -- This should be in grid units
     g = -1 / 50000,
     newBalls = 0,
-    nextFiringPosition = nil
+    nextFiringPosition = nil,
+    hitBlocksTurn = 0,
 }
 
 -- Want internals to work with the positions of the grid I think, and then be
@@ -172,6 +173,7 @@ function FiringContext:handleGrid(balls)
             self.collider:handleCollision(self.activeBalls[id], elements.block)
             collided[id] = self.activeBalls[id]
             count = count + 1
+            self.hitBlocksTurn = self.hitBlocksTurn + 1
             elements.block:decrement()
         elseif elements.powerup ~= nil then
             local hit = elements.powerup:inside(self.activeBalls[id]:getPos())
@@ -225,10 +227,16 @@ end
 
 function FiringContext:setFiringDirection(directionVector)
     -- print(directionVector.x, directionVector.y)
-    print("firing in the direction", directionVector.x, directionVector.y)
+    -- print("firing in the direction", directionVector.x, directionVector.y)
     self.firingVelocity = directionVector * 1 / 10
 end
 
 function FiringContext:getNextFiringPosition()
     return self.nextFiringPosition
+end
+
+function FiringContext:getHitBlockCount()
+    local count = self.hitBlocksTurn
+    self.hitBlocksTurn = 0
+    return count
 end

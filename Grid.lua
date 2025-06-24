@@ -7,7 +7,8 @@ Grid = {
     columns = 8,
     blocks = {},
     powerups = {},
-    probBlock = 0.5
+    probBlock = 0.5,
+    addedHitpoints = 0,
 }
 
 GameOutcome = {
@@ -71,6 +72,7 @@ function Grid:generateNextTurn(hitpoints)
     local outcome = self:checkIntegrity()
     if outcome == GameOutcome.CONTINUE then
         local addedBlocks = self:addBlocks(hitpoints)
+        self.addedHitpoints = addedBlocks * hitpoints
         self:addBalls(addedBlocks)
     end
     return outcome
@@ -137,6 +139,14 @@ function Grid:addBalls(addedBlocks)
             addAfter = addAfter - 1
         end
     end
+end
+
+function Grid:getAddedHitpoints()
+    local count = self.addedHitpoints
+    print(count)
+    self.addedHitpoints = 0
+    print(count)
+    return count
 end
 
 function Grid:draw(adapter)

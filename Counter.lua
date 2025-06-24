@@ -10,16 +10,20 @@ function Counter:new(startingCount, x, y, width, height)
     local o = {}
     setmetatable(o, self)
     self.__index = self
-    self.count = startingCount
-    self.x = x
-    self.y = y
-    self.width = width
-    self.height = height
+    o.count = startingCount
+    o.x = x
+    o.y = y
+    o.width = width
+    o.height = height
     return o
 end
 
 function Counter:increment(count)
     self.count = self.count + count
+end
+
+function Counter:setCount(count)
+    self.count = count
 end
 
 function Counter:draw()
@@ -33,5 +37,5 @@ function Counter:draw()
     local textHeight = font:getHeight(self.count)
     local offsetY = (self.height - textHeight) / 2
     love.graphics.print(self.count, self.x + offsetX, self.y + offsetY)
+    love.graphics.setColor(0.6, 0.6, 0.6)
 end
-
