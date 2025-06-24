@@ -11,8 +11,8 @@ function Circle:new(x, y, r)
     local o = {}
     setmetatable(o, self)
     self.__index = self
-    self.radius = r
-    self.position = PositionVector:new(x, y)
+    o.radius = r
+    o.position = PositionVector:new(x, y)
     return o
 end
 

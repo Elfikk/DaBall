@@ -14,7 +14,7 @@ function TargetContext:new(posX, posY)
     local o = Context:new()
     setmetatable(o, self)
     self.__index = self
-    self.ballPosition = PositionVector:new(posX, posY)
+    o.ballPosition = PositionVector:new(posX, posY)
     return o
 end
 

@@ -37,8 +37,8 @@ function FiringContext:new(grid_cols, grid_rows)
     local o = Context:new()
     setmetatable(o, self)
     self.__index = self
-    self.boundingBox = Box:new(0, grid_cols, 0, grid_rows)
-    self.firingPosition = PositionVector:new(grid_cols / 2, grid_rows)
+    o.boundingBox = Box:new(0, grid_cols, 0, grid_rows)
+    o.firingPosition = PositionVector:new(grid_cols / 2, grid_rows)
     return o
 end
 
