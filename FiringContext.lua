@@ -173,8 +173,10 @@ function FiringContext:handleGrid(balls)
             self.collider:handleCollision(self.activeBalls[id], elements.block)
             collided[id] = self.activeBalls[id]
             count = count + 1
-            self.hitBlocksTurn = self.hitBlocksTurn + 1
             elements.block:decrement()
+            if elements.block:getHitpoints() > -1 then
+                self.hitBlocksTurn = self.hitBlocksTurn + 1
+            end
         elseif elements.powerup ~= nil then
             local hit = elements.powerup:inside(self.activeBalls[id]:getPos())
             if hit then
@@ -239,4 +241,8 @@ function FiringContext:getHitBlockCount()
     local count = self.hitBlocksTurn
     self.hitBlocksTurn = 0
     return count
+end
+
+function FiringContext:getNumBalls()
+    return self.targetBalls
 end

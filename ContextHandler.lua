@@ -68,6 +68,7 @@ function ContextHandler:update()
             else
                 self.gridSum = self.gridSum + self.grid:getAddedHitpoints()
             end
+            self.contexts[Contexts.TARGET]:setNumBalls(self.contexts[Contexts.FIRE]:getNumBalls())
         end
     end
 end

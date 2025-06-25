@@ -5,7 +5,8 @@ TargetContext = {
     ballPosition = PositionVector:new(300, 200),
     aimedAt = PositionVector:new(0, 0),
     active = true,
-    aiming = false
+    aiming = false,
+    numBalls = 1
 }
 
 function TargetContext:new(posX, posY)
@@ -57,10 +58,15 @@ function TargetContext:draw(adapter)
         love.graphics.line(self.ballPosition.x, self.ballPosition.y, self.aimedAt.x, self.aimedAt.y)
     end
     love.graphics.circle("fill", self.ballPosition.x, self.ballPosition.y, 3)
+    love.graphics.print("x"..self.numBalls, self.ballPosition.x * 1.01, self.ballPosition.y * 0.97)
 end
 
 function TargetContext:setBallPosition(pos)
     self.ballPosition = pos
+end
+
+function TargetContext:setNumBalls(num)
+    self.numBalls = num
 end
 
 function TargetContext:getTargetDirection()
