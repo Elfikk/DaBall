@@ -208,7 +208,7 @@ function FiringContext:setFiringPosition(pos)
 end
 
 function FiringContext:setFiringDirection(directionVector)
-    self.firingVelocity = directionVector * 1 / 10
+    self.firingVelocity = directionVector * 1 / self.timesteps
 end
 
 function FiringContext:getNextFiringPosition()
