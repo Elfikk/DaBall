@@ -46,16 +46,12 @@ function ContextHandler:update()
     end
     -- Incorporate transition here. Should a context know when it's finished? isActive()?
     if not currentContext:isActive() then
-        -- print("not active")
-        -- print(self.currentContextType, Contexts.TARGET, Contexts.FIRE, Contexts.BASE )
         if self.currentContextType == Contexts.TARGET then
-            -- print(1)
             local direction = currentContext:getTargetDirection()
             self.contexts[Contexts.FIRE]:setFiringDirection(direction)
             currentContext:reset()
             self.currentContextType = Contexts.FIRE
         elseif self.currentContextType == Contexts.FIRE then
-            -- print("firing")
             local gridFiringPosition = currentContext:getNextFiringPosition()
             local viewportFiringPos = self.coordinateAdapter:gridToViewportCoordinate(gridFiringPosition.x, gridFiringPosition.y)
             self.contexts[Contexts.FIRE]:reset()

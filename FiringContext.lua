@@ -45,10 +45,8 @@ end
 function FiringContext:update(grid)
     -- For a number of times per frame
     for i = 0, self.timesteps - 1 do
-        -- -- print("")
         -- If more balls to be fired, and want a new one this timestep, create a new ball
         if self.firedBalls < self.targetBalls then
-            -- print("new ball")
             self.stepsToNextBall = self.stepsToNextBall - 1
             if self.stepsToNextBall == 0 then
                 self:fire()
@@ -63,20 +61,15 @@ function FiringContext:update(grid)
         local toCheck = self.activeBalls
         local checkCount = self.activeCount
         while checkCount > 0 do
-            -- print("check count", checkCount)
             local locations = self:determineLocations(toCheck, grid)
             self:handleBelow(locations[Location.BELOW])
             checkCount = self:handleOutOfBounds(locations[Location.OUT_OF_BOUNDS])
-            -- print("out of bounds", checkCount)
-            -- -- print("OOB count", checkCount)
             local gridCollisionCount = 0
             toCheck, gridCollisionCount = self:handleGrid(locations[Location.GRID])
             for id, ball in pairs(locations[Location.OUT_OF_BOUNDS]) do
                 toCheck[id] = ball
             end
-            -- -- print("Collision checks", gridCollisionCount)
             checkCount = checkCount + gridCollisionCount
-            -- -- print(checkCount)
             -- Remove any non-valid blocks; really this should be done during
             -- collisions, but currently we don't do those in time order but in id
             -- order
@@ -98,11 +91,8 @@ end
 function FiringContext:propagateBalls()
     for id, ball in pairs(self.activeBalls) do
         local oldPos = ball:getPos()
-        -- -- print(oldPos.x, oldPos.y)
         local newPos = oldPos + ball:getVel() / self.timesteps
-        -- -- print(newPos.x, newPos.y)
         ball:setPos(newPos.x, newPos.y)
-        -- -- print("new pos:", newPos.x, newPos.y)
     end
 end
 
@@ -118,16 +108,13 @@ function FiringContext:determineLocations(balls, grid)
         local y = ballPos.y
         local ballId = ball:getId()
         if self.boundingBox:inside(x, y) then
-            -- print("Grid")
             locations[Location.GRID][ballId] = {
                 block = grid:blockAt(math.floor(y), math.floor(x)),
                 powerup = grid:powerupAt(math.floor(y), math.floor(x))
             }
         elseif self.boundingBox:below(y) then
-            -- print("Below")
             locations[Location.BELOW][ballId] = ball
         else
-            -- print("Out of Bounds")
             locations[Location.OUT_OF_BOUNDS][ballId] = ball
         end
     end
@@ -155,7 +142,6 @@ end
 function FiringContext:handleOutOfBounds(balls)
     local count = 0
     for id, val in pairs(balls) do
-        -- -- print("OOB", id, val)
         self.collider:handleCollision(self.activeBalls[id], self.boundingBox)
         count = count + 1
     end
@@ -163,12 +149,9 @@ function FiringContext:handleOutOfBounds(balls)
 end
 
 function FiringContext:handleGrid(balls)
-    -- print("handling grid")
     local collided = {}
     local count = 0
-    -- print(balls, balls[1])
     for id, elements in pairs(balls) do
-        -- print(id)
         if elements.block ~= nil then
             self.collider:handleCollision(self.activeBalls[id], elements.block)
             collided[id] = self.activeBalls[id]
@@ -192,7 +175,6 @@ function FiringContext:updateVelocities()
         local oldVel = ball:getVel()
         local newVel = oldVel + PositionVector:new(0, -self.g / self.timesteps)
         ball:setVel(newVel.x, newVel.y)
-        -- -- print("new vel:", newVel.x, newVel.y)
     end
 end
 
@@ -212,7 +194,6 @@ function FiringContext:isActive()
 end
 
 function FiringContext:reset()
-    -- print(self.targetBalls, self.newBalls)
     self.targetBalls = self.targetBalls + self.newBalls
     self.firedBalls = 0
     self.activeCount = 0
@@ -223,13 +204,10 @@ function FiringContext:reset()
 end
 
 function FiringContext:setFiringPosition(pos)
-    print("firing from:", pos.x, pos.y)
     self.firingPosition = pos
 end
 
 function FiringContext:setFiringDirection(directionVector)
-    -- print(directionVector.x, directionVector.y)
-    -- print("firing in the direction", directionVector.x, directionVector.y)
     self.firingVelocity = directionVector * 1 / 10
 end
 

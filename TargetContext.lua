@@ -26,10 +26,8 @@ function TargetContext:mousemoved(x, y, dx, dy, istouch)
 end
 
 function TargetContext:mousepressed(x, y, button, istouch, presses)
-    print("mouse pressed", x, y)
     if self.active then
         if not self.aiming then
-            print("")
             self.aimedAt = PositionVector:new(x, y)
             self.aiming = true
         else
@@ -41,7 +39,6 @@ end
 function TargetContext:mousereleased(x, y, button, istouch, presses)
     -- if valid position
     -- set inactive
-    -- print(x, y)
     if self.aimedAt.y < self.ballPosition.y then
         self.active = false
         return
@@ -71,9 +68,6 @@ end
 
 function TargetContext:getTargetDirection()
     local positionVector = self.aimedAt - self.ballPosition
-    -- print("Ball Starting Coordinate", self.ballPosition.x, self.ballPosition.y)
-    -- print("Ball Crosshair Aimed At", self.aimedAt.x, self.aimedAt.y)
-    -- print("Difference", positionVector.x, positionVector.y)
     return positionVector:directionVector()
 end
 

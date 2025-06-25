@@ -110,7 +110,6 @@ function Grid:addBlocks(hitpoints)
         if math.random() < self.probBlock then
             self.blocks[0][j] = Block:new(j, j + 1, 0, 1, hitpoints)
             added = added + 1
-            -- -- print("added at", j)
         end
     end
 
@@ -132,7 +131,6 @@ function Grid:addBalls(addedBlocks)
     for i = 0, self.columns - 1 do
         if self.blocks[0][i] == nil then
             if addAfter == 0 then
-                -- -- print("added ball at", i)
                 self.powerups[0][i] = Circle:new(i + 0.5, 0.5, 0.25)
                 return
             end
@@ -143,9 +141,7 @@ end
 
 function Grid:getAddedHitpoints()
     local count = self.addedHitpoints
-    print(count)
     self.addedHitpoints = 0
-    print(count)
     return count
 end
 
