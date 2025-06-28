@@ -1,6 +1,7 @@
 require("Context")
 require("FiringContext")
 require("Grid")
+require("GridDrawer")
 require("GridViewportAdapter")
 require("TargetContext")
 
@@ -17,6 +18,7 @@ ContextHandler = {
     contexts = {[Contexts.BASE] = Context},
     turns = 1,
     gridSum = 0,
+    gridDrawer = GridDrawer, -- temporary
 }
 
 function ContextHandler:new(cols, rows, viewportX0, viewportX1, viewportY0, viewportY1)
@@ -29,12 +31,13 @@ function ContextHandler:new(cols, rows, viewportX0, viewportX1, viewportY0, view
     o.contexts[Contexts.FIRE] = FiringContext:new(cols, rows)
     o.grid:generateNextTurn(o.turns)
     o.gridSum = o.grid:getAddedHitpoints()
+    o.gridDrawer = GridDrawer:new(o.grid)
     o.currentContextType = Contexts.TARGET
     return o
 end
 
 function ContextHandler:draw()
-    self.grid:draw(self.coordinateAdapter)
+    self.gridDrawer:draw(self.coordinateAdapter)
     self.contexts[self.currentContextType]:draw(self.coordinateAdapter)
 end
 
