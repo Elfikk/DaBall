@@ -2,6 +2,7 @@ require("ContextHandler")
 require("Counter")
 
 function love.load()
+    math.randomseed(os.time())
     local width = 1200
     local height = 900
     love.window.setMode(width, height)
