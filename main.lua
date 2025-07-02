@@ -21,11 +21,13 @@ function love.load()
     hitpointCounter = Counter:new(2, gridOffsetX + gridWidth - (cols / 2 - 1) * blockSize, gridOffsetY + gridHeight + blockSize / 10, (cols / 2 - 1) * blockSize, blockSize / 2)
 
     shader = love.graphics.newShader("ShaderMessAround/grid.love.glsl")
+
+    love.graphics.setNewFont(18)
 end
 
 function love.draw()
-    love.graphics.setShader(shader)
     love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setShader(shader)
     contextHandler:draw()
     turnCounter:draw()
     hitpointCounter:draw()

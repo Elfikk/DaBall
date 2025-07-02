@@ -1,9 +1,7 @@
-extern vec2 u_resolution;
-
 vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
-    number div_x = love_ScreenSize.x / 4.;
-    number div_y = love_ScreenSize.y / 4.;
+    number div_x = love_ScreenSize.x / 2.75;
+    number div_y = love_ScreenSize.y / 2.75;
 
     vec2 st = screen_coords.xy / love_ScreenSize.xy;
 

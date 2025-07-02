@@ -4,7 +4,7 @@ require("ShapeDrawer")
 GridDrawer = {
     blockColours = {
         fill = {r = 0.5, g = 0.5, b = 0.5},
-        outline = {r = 1, g = 1, b = 1},
+        -- outline = {r = 1, g = 1, b = 1},
         text = {r = 0.8, g = 0.8, b = 0.8},
     },
     boundColours = {
