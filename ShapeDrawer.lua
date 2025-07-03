@@ -46,6 +46,10 @@ function ShapeDrawer:drawCircle(x, y, r, palette, text, textAlignment)
     end
 end
 
+-- function ShapeDrawer:drawLine()
+
+-- end
+
 function ShapeDrawer:drawText(x, y, boundingWidth, boundingHeight, text, alignment, colour)
     assert(text ~= nil, "Passed no text to draw")
     local offsetX, offsetY = 0, 0

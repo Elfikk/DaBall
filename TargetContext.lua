@@ -50,14 +50,6 @@ function TargetContext:isActive()
     return self.active
 end
 
-function TargetContext:draw(adapter)
-    if self.aiming then
-        love.graphics.line(self.ballPosition.x, self.ballPosition.y, self.aimedAt.x, self.aimedAt.y)
-    end
-    love.graphics.circle("fill", self.ballPosition.x, self.ballPosition.y, 3)
-    love.graphics.print("x"..self.numBalls, self.ballPosition.x * 1.01, self.ballPosition.y * 0.97)
-end
-
 function TargetContext:setBallPosition(pos)
     self.ballPosition = pos
 end
@@ -77,4 +69,20 @@ end
 
 function TargetContext:reset()
     self.aiming = false
+end
+
+function TargetContext:isAiming()
+    return self.aiming
+end
+
+function TargetContext:startPosition()
+    return self.ballPosition
+end
+
+function TargetContext:aimingAt()
+    return self.aimedAt
+end
+
+function TargetContext:numberBalls()
+    return self.numBalls
 end
