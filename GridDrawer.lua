@@ -29,9 +29,9 @@ function GridDrawer:draw(adapter)
         for j = 0, self.grid.columns - 1 do
             if self.grid.blocks[i][j] ~= nil then
                 local bounds = self.grid.blocks[i][j]:getBounds()
-                local viewportPos = adapter:gridToViewportCoordinate(bounds.x0, bounds.y1)
+                local viewportPos = adapter:gridToViewportCoordinate(bounds.x0, bounds.y0)
                 local width = adapter:gridToViewportWidth(bounds.x1 - bounds.x0)
-                local height = adapter:gridToViewportWidth(bounds.y0 - bounds.y1)
+                local height = adapter:gridToViewportWidth(bounds.y1 - bounds.y0)
                 self:drawBlock(self.grid.blocks[i][j]:getHitpoints(), viewportPos.x, viewportPos.y, width, height)
             end
             if self.grid.powerups[i][j] ~= nil then

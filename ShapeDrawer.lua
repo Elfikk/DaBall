@@ -52,18 +52,18 @@ function ShapeDrawer:drawText(x, y, boundingWidth, boundingHeight, text, alignme
     local font = love.graphics.getFont()
     local textWidth = font:getWidth(text)
     local textHeight = font:getHeight(text)
-    if (bit.band(alignment,TextAlignment.CENTRE) == 1) then
+    if (bit.band(alignment,TextAlignment.CENTRE) ~= 0) then
         offsetX = (boundingWidth - textWidth) / 2
         offsetY = (boundingHeight - textHeight) / 2
     end
-    if (bit.band(alignment,TextAlignment.LEFT) == 1) then
+    if (bit.band(alignment,TextAlignment.LEFT) ~= 0) then
         offsetX = 0
-    elseif (bit.band(alignment,TextAlignment.RIGHT) == 1) then
+    elseif (bit.band(alignment,TextAlignment.RIGHT) ~= 0) then
         offsetX = boundingWidth - textWidth
     end
-    if (bit.band(alignment,TextAlignment.TOP) == 1) then
+    if (bit.band(alignment,TextAlignment.TOP) ~= 0) then
         offsetY = 0
-    elseif (bit.band(alignment,TextAlignment.BOTTOM) == 1) then
+    elseif (bit.band(alignment,TextAlignment.BOTTOM) ~= 0) then
         offsetY = boundingHeight - textHeight
     end
     love.graphics.setColor(colour.r, colour.g, colour.b)
