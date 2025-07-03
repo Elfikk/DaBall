@@ -4,7 +4,7 @@ require("TargetContext")
 TargetDrawer = {
     targetContext = TargetContext,
     targetColours = {
-        colour = {r = 1.0, g = 0.0, b = 0.0},
+        outline = {r = 1.0, g = 0.0, b = 0.0},
     },
     startColours = {
         outline = {r = 1.0, g = 0.0, b = 0.0},
@@ -24,7 +24,7 @@ function TargetDrawer:draw(adapter)
     local startPosition = self.targetContext:startPosition()
     if self.targetContext:isAiming() then
         local aimedAt = self.targetContext:aimingAt()
-        love.graphics.line(startPosition.x, startPosition.y, aimedAt.x, aimedAt.y)
+        ShapeDrawer:drawLine(startPosition.x, startPosition.y, aimedAt.x, aimedAt.y, self.targetColours)
     end
     ShapeDrawer:drawCircle(
         startPosition.x,

@@ -46,9 +46,14 @@ function ShapeDrawer:drawCircle(x, y, r, palette, text, textAlignment)
     end
 end
 
--- function ShapeDrawer:drawLine()
-
--- end
+-- TODO : Support Text on a Line?
+function ShapeDrawer:drawLine(x0, y0, x1, y1, palette)
+    assert(palette ~= nil, "Palette was not a valid table when drawing line.")
+    if palette.outline ~= nil then
+        love.graphics.setColor(palette.outline.r, palette.outline.g, palette.outline.b)
+        love.graphics.line(x0, y0, x1, y1)
+    end
+end
 
 function ShapeDrawer:drawText(x, y, boundingWidth, boundingHeight, text, alignment, colour)
     assert(text ~= nil, "Passed no text to draw")
