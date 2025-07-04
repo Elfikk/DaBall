@@ -178,17 +178,6 @@ function FiringContext:updateVelocities()
     end
 end
 
-function FiringContext:draw(adapter)
-    for id, ball in pairs(self.activeBalls) do
-        local viewportPos = adapter:gridToViewportCoordinate(ball.posNow.x, ball.posNow.y)
-        love.graphics.circle("fill", viewportPos.x, viewportPos.y, 3)
-    end
-    if self.nextFiringPosition ~= nil then
-        local viewportPos = adapter:gridToViewportCoordinate(self.nextFiringPosition.x, self.nextFiringPosition.y)
-        love.graphics.circle("fill", viewportPos.x, viewportPos.y, 3)
-    end
-end
-
 function FiringContext:isActive()
     return not ((self.activeCount == 0) and (self.firedBalls == self.targetBalls))
 end
