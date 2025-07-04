@@ -1,9 +1,15 @@
+require("ShapeDrawer")
+
 Counter = {
     count = 0,
     x = 0,
     y = 0,
     width = 0,
     height = 0,
+    colour = {
+        fill = {r = 0.6, g = 0.6, b = 0.6},
+        text = {r = 0, g = 0, b = 0},
+    },
 }
 
 function Counter:new(startingCount, x, y, width, height)
@@ -27,15 +33,5 @@ function Counter:setCount(count)
 end
 
 function Counter:draw()
-    love.graphics.setColor(0.6, 0.6, 0.6)
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-    love.graphics.setColor(0, 0, 0)
-
-    local font = love.graphics.getFont()
-    local textWidth = font:getWidth(self.count)
-    local offsetX = (self.width - textWidth) / 2
-    local textHeight = font:getHeight(self.count)
-    local offsetY = (self.height - textHeight) / 2
-    love.graphics.print(self.count, self.x + offsetX, self.y + offsetY)
-    love.graphics.setColor(0.6, 0.6, 0.6)
+    ShapeDrawer:drawRectangle(self.x, self.y, self.width, self.height, self.colour, self.count, TextAlignment.CENTRE)
 end
