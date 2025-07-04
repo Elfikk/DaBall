@@ -1,18 +1,11 @@
 require("Grid")
+require("Palettes")
 require("ShapeDrawer")
 
 GridDrawer = {
-    blockColours = {
-        fill = {r = 0.5, g = 0.5, b = 0.5},
-        -- outline = {r = 1, g = 1, b = 1},
-        text = {r = 0.8, g = 0.8, b = 0.8},
-    },
-    boundColours = {
-        outline = {r = 0.8, g = 0, b = 0},
-    },
-    powerupColour = {
-        fill = {r = 0, g = 0.5, b = 0},
-    },
+    blockColours = CurrentTheme.blockColours,
+    boundColours = CurrentTheme.boundColours,
+    powerupColour = CurrentTheme.powerupColour,
     grid = Grid,
 }
 

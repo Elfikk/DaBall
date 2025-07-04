@@ -1,15 +1,11 @@
+require("Palettes")
 require("ShapeDrawer")
 require("TargetContext")
 
 TargetDrawer = {
     targetContext = TargetContext,
-    targetColours = {
-        outline = {r = 1.0, g = 0.0, b = 0.0},
-    },
-    startColours = {
-        outline = {r = 1.0, g = 0.0, b = 0.0},
-        text = {r = 1.0, g = 1.0, b = 1.0}
-    },
+    targetColours = CurrentTheme.targetColours,
+    startColours = CurrentTheme.markerColour,
 }
 
 function TargetDrawer:new(targetter)

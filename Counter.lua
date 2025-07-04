@@ -1,3 +1,4 @@
+require("Palettes")
 require("ShapeDrawer")
 
 Counter = {
@@ -6,10 +7,7 @@ Counter = {
     y = 0,
     width = 0,
     height = 0,
-    colour = {
-        fill = {r = 0.6, g = 0.6, b = 0.6},
-        text = {r = 0, g = 0, b = 0},
-    },
+    colour = CurrentTheme.counterColours,
 }
 
 function Counter:new(startingCount, x, y, width, height)

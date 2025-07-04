@@ -1,10 +1,10 @@
 require("FiringContext")
+require("Palettes")
 require("ShapeDrawer")
 
 FiringDrawer = {
-    ballColour = {
-        fill = {r = 1, g = 0, b = 0},
-    },
+    ballColour = CurrentTheme.ballColours,
+    markerColour = CurrentTheme.markerColour,
     firingContext = FiringContext,
 }
 
@@ -23,6 +23,6 @@ function FiringDrawer:draw(adapter)
     if self.firingContext.nextFiringPosition ~= nil then
         local markerPos = self.firingContext.nextFiringPosition
         local viewportPos = adapter:gridToViewportCoordinate(markerPos.x, markerPos.y)
-        ShapeDrawer:drawCircle(viewportPos.x, viewportPos.y, 3, self.ballColour, nil, nil)
+        ShapeDrawer:drawCircle(viewportPos.x, viewportPos.y, 3, self.markerColour, nil, nil)
     end
 end
