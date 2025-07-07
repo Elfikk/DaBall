@@ -13,6 +13,7 @@ function FiringDrawer:new(firing)
     setmetatable(o, self)
     self.__index = self
     o.firingContext = firing
+    return o
 end
 
 function FiringDrawer:draw(adapter)
@@ -20,9 +21,9 @@ function FiringDrawer:draw(adapter)
         local viewportPos = adapter:gridToViewportCoordinate(ball.posNow.x, ball.posNow.y)
         ShapeDrawer:drawCircle(viewportPos.x, viewportPos.y, 3, self.ballColour, nil, nil)
     end
-    if self.firingContext.nextFiringPosition ~= nil then
-        local markerPos = self.firingContext.nextFiringPosition
-        local viewportPos = adapter:gridToViewportCoordinate(markerPos.x, markerPos.y)
+    local firingPos = self.firingContext:getNextFiringPosition()
+    if firingPos ~= nil then
+        local viewportPos = adapter:gridToViewportCoordinate(firingPos.x, firingPos.y)
         ShapeDrawer:drawCircle(viewportPos.x, viewportPos.y, 3, self.markerColour, nil, nil)
     end
 end

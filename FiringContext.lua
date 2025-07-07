@@ -39,6 +39,7 @@ function FiringContext:new(grid_cols, grid_rows)
     self.__index = self
     o.boundingBox = Box:new(0, grid_cols, 0, grid_rows)
     o.firingPosition = PositionVector:new(grid_cols / 2, grid_rows)
+    o.activeBalls = {}
     return o
 end
 
