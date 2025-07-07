@@ -26,12 +26,13 @@ function love.load()
 end
 
 function love.draw()
-    love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
     love.graphics.setShader(shader)
     contextHandler:draw()
     turnCounter:draw()
     hitpointCounter:draw()
     love.graphics.setShader()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
 end
 
 function love.update()
