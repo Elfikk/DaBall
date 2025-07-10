@@ -28,6 +28,7 @@ function ButtonHandler:mousepressed(x, y, mouseButton, istouch, presses)
             return enum
         end
     end
+    return nil
 end
 
 function ButtonHandler:addButton(type, button, visible)
@@ -45,6 +46,6 @@ end
 
 function ButtonHandler:hide(type)
     assert(self.visibleButtons[type] ~= nil, "Button is already visible.")
-    assert(self.allButtons[type] ~= nil, "Button type does not exist but want to make visible.")
+    assert(self.allButtons[type] ~= nil, "Button type does not exist but want to be hidden.")
     self.visibleButtons[type] = nil
 end
