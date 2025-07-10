@@ -29,6 +29,8 @@ function Grid:new(rows, columns)
             o.powerups[i][j] = nil
         end
     end
+    o.rows = rows
+    o.columns = columns
     return o
 end
 
