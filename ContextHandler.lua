@@ -4,6 +4,7 @@ require("FiringContextDrawer")
 require("Grid")
 require("GridDrawer")
 require("GridViewportAdapter")
+require("Saver")
 require("TargetContext")
 require("TargetContextDrawer")
 
@@ -78,6 +79,7 @@ function ContextHandler:update()
                 self.gridSum = self.gridSum + self.grid:getAddedHitpoints()
             end
             self.contexts[Contexts.TARGET]:setNumBalls(self.contexts[Contexts.FIRE]:getNumBalls())
+            Saver:saveGrid(self.grid)
         end
     end
 end
