@@ -11,8 +11,8 @@ FiringContext = {
     firedBalls = 0,
     activeCount = 0,
     targetBalls = 1,
-    timesteps = 10,
-    ballStepInterval = 250,
+    timesteps = 50,
+    ballStepInterval = 500,
     stepsToNextBall = 1,
     firingPosition = PositionVector:new(0, 0), -- This should be in grid units
     firingVelocity = PositionVector:new(0, 0), -- This should be in grid units
@@ -205,7 +205,7 @@ function FiringContext:getFiringPosition()
 end
 
 function FiringContext:setFiringDirection(directionVector)
-    self.firingVelocity = directionVector * 1 / self.timesteps
+    self.firingVelocity = directionVector * 6 / self.timesteps
 end
 
 function FiringContext:getNextFiringPosition()
