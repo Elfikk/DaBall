@@ -34,6 +34,18 @@ function Grid:new(rows, columns)
     return o
 end
 
+function Grid:fromSave(rows, columns, blocks, powerups, blockCount)
+    local o = {}
+    setmetatable(o, self)
+    self.__index = self
+    o.rows = rows
+    o.columns = columns
+    o.blocks = blocks
+    o.powerups = powerups
+    o.addedHitpoints = blockCount
+    return o
+end
+
 function Grid:blockAt(row, column)
     assert(row <= self.rows - 1 and row >= 0, "Out of bound row looked up.")
     assert(column <= self.columns - 1 and column >= 0, "Out of bound column looked up.")

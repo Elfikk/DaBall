@@ -43,6 +43,26 @@ function ContextHandler:new(cols, rows, viewportX0, viewportX1, viewportY0, view
     return o
 end
 
+function ContextHandler:fromSave(viewportX0, viewportX1, viewportY0, viewportY1, numTurns)
+    local o = {}
+    setmetatable(o, self)
+    self.__index = self
+    o.grid, o.contexts[Contexts.FIRE] = Saver:loadObjects()
+    o.coordinateAdapter = GridViewportAdapter:new(o.grid.columns, o.grid.rows, viewportX0, viewportX1, viewportY0, viewportY1)
+    o.contexts[Contexts.TARGET] = TargetContext:new((viewportX1 - viewportX0) / 2 + viewportX0, viewportY1)
+    local gridFiringPosition = o.contexts[Contexts.FIRE]:getFiringPosition()
+    local viewportFiringPos = o.coordinateAdapter:gridToViewportCoordinate(gridFiringPosition.x, gridFiringPosition.y)
+    o.contexts[Contexts.TARGET]:setBallPosition(viewportFiringPos)
+    o.contexts[Contexts.TARGET]:setNumBalls(o.contexts[Contexts.FIRE]:getNumBalls())
+    o.gridDrawer = GridDrawer:new(o.grid)
+    o.targetDrawer = TargetDrawer:new(o.contexts[Contexts.TARGET])
+    o.firingDrawer = FiringDrawer:new(o.contexts[Contexts.FIRE])
+    o.currentContextType = Contexts.TARGET
+    o.gridSum = o.grid:getAddedHitpoints()
+    o.turns = numTurns
+    return o
+end
+
 function ContextHandler:draw()
     self.gridDrawer:draw(self.coordinateAdapter)
     if self.currentContextType == Contexts.TARGET then
@@ -80,6 +100,8 @@ function ContextHandler:update()
             end
             self.contexts[Contexts.TARGET]:setNumBalls(self.contexts[Contexts.FIRE]:getNumBalls())
             Saver:saveGrid(self.grid)
+            Saver:saveFiringState(self.contexts[Contexts.FIRE])
+            Saver:saveContextState(self)
         end
     end
 end

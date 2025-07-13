@@ -43,6 +43,13 @@ function FiringContext:new(grid_cols, grid_rows)
     return o
 end
 
+function FiringContext:fromSave(grid_cols, grid_rows, firingX, firingY, numBalls)
+    local o = FiringContext:new(grid_cols, grid_rows)
+    o.firingPosition = PositionVector:new(firingX, firingY)
+    o.targetBalls = numBalls
+    return o
+end
+
 function FiringContext:update(grid)
     -- For a number of times per frame
     for i = 0, self.timesteps - 1 do
@@ -193,8 +200,8 @@ function FiringContext:reset()
     self.nextFiringPosition = nil
 end
 
-function FiringContext:setFiringPosition(pos)
-    self.firingPosition = pos
+function FiringContext:getFiringPosition()
+    return self.firingPosition
 end
 
 function FiringContext:setFiringDirection(directionVector)

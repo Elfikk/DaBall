@@ -1,5 +1,6 @@
 require("ContextHandler")
 require("Counter")
+require("Saver")
 
 function love.load()
     math.randomseed(os.time())
@@ -15,7 +16,13 @@ function love.load()
     local gridHeight = blockSize * rows
     local gridOffsetX = (width - gridWidth) / 2
     local gridOffsetY = (height - gridHeight) / 2
-    contextHandler = ContextHandler:new(cols, rows, gridOffsetX, gridOffsetX + gridWidth, gridOffsetY, gridOffsetY + gridHeight)
+
+    contextHandler = nil
+    if Saver:saveFilesExist() then
+        contextHandler = ContextHandler:fromSave(gridOffsetX, gridOffsetX + gridWidth, gridOffsetY, gridOffsetY + gridHeight, Saver:loadContextState())
+    else
+        contextHandler = ContextHandler:new(cols, rows, gridOffsetX, gridOffsetX + gridWidth, gridOffsetY, gridOffsetY + gridHeight)
+    end
     -- Not like this eh
     turnCounter = Counter:new(1, gridOffsetX, gridOffsetY + gridHeight + blockSize / 10, (cols / 2 - 1) * blockSize, blockSize / 2)
     hitpointCounter = Counter:new(2, gridOffsetX + gridWidth - (cols / 2 - 1) * blockSize, gridOffsetY + gridHeight + blockSize / 10, (cols / 2 - 1) * blockSize, blockSize / 2)
