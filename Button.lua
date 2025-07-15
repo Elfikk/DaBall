@@ -24,7 +24,7 @@ function Button:mousepressed(x, y, button, istouch, presses)
     return self:inside(x, y)
 end
 
-function Button:draw(adapter)
+function Button:draw()
     local bounds = self.bounds
     ShapeDrawer:drawRectangle(
         bounds.x0,
@@ -35,4 +35,8 @@ function Button:draw(adapter)
         self.text,
         self.textAlignment
     )
+end
+
+function Button:setText(text)
+    self.text = text
 end

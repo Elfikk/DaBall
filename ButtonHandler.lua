@@ -1,3 +1,6 @@
+require("Button")
+require("ShapeDrawer")
+
 ButtonTypes = {
     PAUSE = {},
     RESTART = {},
@@ -14,6 +17,35 @@ function ButtonHandler:new()
     setmetatable(o, self)
     self.__index = self
     return o
+end
+
+-- Hardcoded layout is sad but good enough for now.
+function ButtonHandler:makeButtons(x0, x1, y0, y1)
+    local ds = (x1 - x0) / 50
+    self.allButtons[ButtonTypes.PAUSE] = Button:new(
+        x0,
+        x0 + (x1 - x0)/3 - 2 * ds,
+        y0,
+        y1,
+        "Pause",
+        TextAlignment.CENTRE
+    )
+    self.allButtons[ButtonTypes.RESTART] = Button:new(
+        x0 + (x1 - x0)/3 + ds,
+        x0 + 2 * (x1 - x0)/3 - ds,
+        y0,
+        y1,
+        "Restart",
+        TextAlignment.CENTRE
+    )
+    self.allButtons[ButtonTypes.QUIT] = Button:new(
+        x0 + 2 * (x1 - x0)/3 + 2 * ds,
+        x1,
+        y0,
+        y1,
+        "Quit",
+        TextAlignment.CENTRE
+    )
 end
 
 function ButtonHandler:draw()
@@ -48,4 +80,8 @@ function ButtonHandler:hide(type)
     assert(self.visibleButtons[type] ~= nil, "Button is already visible.")
     assert(self.allButtons[type] ~= nil, "Button type does not exist but want to be hidden.")
     self.visibleButtons[type] = nil
+end
+
+function ButtonHandler:setText(type, text)
+    self.allButtons[type]:setText(text)
 end
