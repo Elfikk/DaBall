@@ -12,6 +12,7 @@ function Button:new(x0, x1, y0, y1, text, textAlignment)
     Button.__index = Button
     setmetatable(Button, {__index = Box})
     local o = Box:new(x0, x1, y0, y1)
+    setmetatable(o, Button)
     o.id = Button.id
     Button.id = Button.id + 1
     o.text = text
