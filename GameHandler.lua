@@ -1,5 +1,6 @@
 require("ButtonHandler")
 require("ContextHandler")
+require("CounterHandler")
 
 States = {
     PAUSED = {},
@@ -26,6 +27,8 @@ end
 function GameHandler:update()
     if self.currentState == States.PLAYING then
         self.contextHandler:update()
+        self.counters:setCount(CounterTypes.GRID_SUM, self.contextHandler:getGridSum())
+        self.counters:setCount(CounterTypes.TURNS, self.contextHandler:getTurns())
     end
 end
 
@@ -65,4 +68,5 @@ end
 function GameHandler:draw()
     self.buttonHandler:draw()
     self.contextHandler:draw()
+    self.counters:draw()
 end

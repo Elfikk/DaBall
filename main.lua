@@ -1,6 +1,7 @@
 require("ButtonHandler")
 require("ContextHandler")
 require("Counter")
+require("CounterHandler")
 require("GameHandler")
 require("Saver")
 
@@ -26,8 +27,14 @@ function love.load()
         contextHandler = ContextHandler:new(cols, rows, gridOffsetX, gridOffsetX + gridWidth, gridOffsetY, gridOffsetY + gridHeight)
     end
     -- Not like this eh
-    turnCounter = Counter:new(1, gridOffsetX, gridOffsetY + gridHeight + blockSize / 10, (cols / 2 - 1) * blockSize, blockSize / 2)
-    hitpointCounter = Counter:new(2, gridOffsetX + gridWidth - (cols / 2 - 1) * blockSize, gridOffsetY + gridHeight + blockSize / 10, (cols / 2 - 1) * blockSize, blockSize / 2)
+
+    local xMax = gridOffsetX + gridWidth
+    local counterY = gridOffsetY + gridHeight + blockSize / 10
+    local counterWidth = (cols / 2 - 1) * blockSize
+    local counterHeight = blockSize / 2
+
+    counterHandler = CounterHandler:new()
+    counterHandler:makeCounters(gridOffsetX, counterY, xMax, counterWidth, counterHeight)
 
     buttonHandler = ButtonHandler:new()
     buttonHandler:makeButtons(
@@ -40,7 +47,7 @@ function love.load()
     buttonHandler:makeVisible(ButtonTypes.RESTART)
     buttonHandler:makeVisible(ButtonTypes.QUIT)
 
-    gameHandler = GameHandler:new(buttonHandler, contextHandler, nil)
+    gameHandler = GameHandler:new(buttonHandler, contextHandler, counterHandler)
 
     shader = love.graphics.newShader("ShaderMessAround/grid.love.glsl")
 
@@ -49,8 +56,6 @@ end
 
 function love.draw()
     love.graphics.setShader(shader)
-    turnCounter:draw()
-    hitpointCounter:draw()
     gameHandler:draw()
     love.graphics.setShader()
     love.graphics.setColor(1, 1, 1)
@@ -59,8 +64,6 @@ end
 
 function love.update()
     gameHandler:update()
-    turnCounter:setCount(contextHandler:getTurns())
-    hitpointCounter:setCount(contextHandler:getGridSum())
 end
 
 function love.mousemoved(x, y, dx, dy, istouch)
