@@ -42,9 +42,11 @@ function GameHandler:mousepressed(x, y, button, istouch, presses)
         if self.currentState == States.PLAYING then
             self.currentState = States.PAUSED
             self.buttonHandler:setText(ButtonTypes.PAUSE, "Resume")
+            self.buttonHandler:makeVisible(ButtonTypes.RESTART)
         elseif self.currentState == States.PAUSED then
             self.currentState = States.PLAYING
             self.buttonHandler:setText(ButtonTypes.PAUSE, "Pause")
+            self.buttonHandler:hide(ButtonTypes.RESTART)
         end
     elseif buttonType == ButtonTypes.RESTART then
         -- Restart LMAO
