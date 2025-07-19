@@ -85,3 +85,8 @@ end
 function ButtonHandler:setText(type, text)
     self.allButtons[type]:setText(text)
 end
+
+function ButtonHandler:restartReset()
+    self.allButtons[ButtonTypes.PAUSE]:setText("Pause")
+    self:hide(ButtonTypes.RESTART)
+end

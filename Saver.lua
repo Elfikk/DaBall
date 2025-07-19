@@ -4,9 +4,9 @@ require("Grid")
 require("io")
 
 Saver = {
-    contextPath = love.filesystem.getAppdataDirectory() .. "/Ballz/ContextHandler.csv",
-    firingPath = love.filesystem.getAppdataDirectory() .. "/Ballz/FiringContext.csv",
-    gridPath = love.filesystem.getAppdataDirectory() .. "/Ballz/Grid.csv",
+    contextPath = love.filesystem.getSaveDirectory() .. "/ContextHandler.csv",
+    firingPath = love.filesystem.getSaveDirectory() .. "/FiringContext.csv",
+    gridPath = love.filesystem.getSaveDirectory() .. "/Grid.csv",
 }
 
 function Saver:saveGrid(grid)
@@ -158,14 +158,18 @@ function Saver:loadObjects()
     return grid, firingContext
 end
 
+function Saver:fileExists(filePath)
+    local file = io.open(filePath, "r")
+    return file ~= nil and io.close(file)
+end
+
 function Saver:saveFilesExist()
-    local gridInfo = {}
-    love.filesystem.getInfo(Saver.gridPath, gridInfo)
-    local firingInfo = {}
-    love.filesystem.getInfo(Saver.firingPath, firingInfo)
-    local contextInfo = {}
-    love.filesystem.getInfo(Saver.contextPath, contextInfo)
-    print(Saver.gridPath, Saver.firingPath, Saver.contextPath)
-    print(gridInfo, firingInfo, contextInfo)
-    return (gridInfo ~= nil) and (firingInfo ~= nil) and (contextInfo ~= nil)
+    return self:fileExists(self.gridPath) and self:fileExists(self.firingPath) and self:fileExists(self.contextPath)
+end
+
+function Saver:restartReset()
+    -- Delete previous gamefiles
+    love.filesystem.remove(self.contextPath)
+    love.filesystem.remove(self.firingPath)
+    love.filesystem.remove(self.gridPath)
 end

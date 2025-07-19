@@ -29,3 +29,6 @@ end
 
 function Context:reset()
 end
+
+function Context:restartReset()
+end

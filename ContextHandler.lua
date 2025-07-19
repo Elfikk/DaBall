@@ -63,6 +63,24 @@ function ContextHandler:fromSave(viewportX0, viewportX1, viewportY0, viewportY1,
     return o
 end
 
+-- Want to maintain most parameters here, but just get rid of progress so far?
+-- We should also delete the Saver's saves
+function ContextHandler:restartReset()
+    -- All the objects the context handler manages
+    self.contexts[Contexts.FIRE]:restartReset()
+    self.contexts[Contexts.TARGET]:restartReset()
+    local firePosition = self.contexts[Contexts.FIRE]:getFiringPosition()
+    local viewportFiringPos = self.coordinateAdapter:gridToViewportCoordinate(firePosition.x, firePosition.y)
+    self.contexts[Contexts.TARGET]:setBallPosition(viewportFiringPos)
+    self.grid:restartReset()
+    self.currentContextType = Contexts.TARGET
+    Saver:restartReset()
+
+    -- Itself
+    self.turns = 1
+    self.gridSum = self.grid:getAddedHitpoints()
+end
+
 function ContextHandler:draw()
     self.gridDrawer:draw(self.coordinateAdapter)
     if self.currentContextType == Contexts.TARGET then

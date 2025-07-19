@@ -49,7 +49,7 @@ function GameHandler:mousepressed(x, y, button, istouch, presses)
             self.buttonHandler:hide(ButtonTypes.RESTART)
         end
     elseif buttonType == ButtonTypes.RESTART then
-        -- Restart LMAO
+        self:restartReset()
     elseif buttonType == ButtonTypes.QUIT then
         love.event.quit(0)
     end
@@ -71,4 +71,11 @@ function GameHandler:draw()
     self.buttonHandler:draw()
     self.contextHandler:draw()
     self.counters:draw()
+end
+
+function GameHandler:restartReset()
+    self.buttonHandler:restartReset()
+    self.contextHandler:restartReset()
+    self.counters:restartReset()
+    self.currentState = States.PLAYING
 end

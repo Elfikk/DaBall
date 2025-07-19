@@ -86,3 +86,8 @@ end
 function TargetContext:numberBalls()
     return self.numBalls
 end
+
+function TargetContext:restartReset()
+    self.numBalls = 1
+    self.aiming = false
+end

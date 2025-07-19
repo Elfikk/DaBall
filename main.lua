@@ -44,7 +44,6 @@ function love.load()
         gridOffsetY + gridHeight + 1.5 * blockSize
     )
     buttonHandler:makeVisible(ButtonTypes.PAUSE)
-    buttonHandler:makeVisible(ButtonTypes.RESTART)
     buttonHandler:makeVisible(ButtonTypes.QUIT)
 
     gameHandler = GameHandler:new(buttonHandler, contextHandler, counterHandler)

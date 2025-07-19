@@ -46,6 +46,18 @@ function Grid:fromSave(rows, columns, blocks, powerups, blockCount)
     return o
 end
 
+function Grid:restartReset()
+    for i = 0, self.rows do
+        self.blocks[i] = {}
+        self.powerups[i] = {}
+        for j = 0, self.columns - 1 do
+            self.blocks[i][j] = nil
+            self.powerups[i][j] = nil
+        end
+    end
+    self:generateNextTurn(1)
+end
+
 function Grid:blockAt(row, column)
     assert(row <= self.rows - 1 and row >= 0, "Out of bound row looked up.")
     assert(column <= self.columns - 1 and column >= 0, "Out of bound column looked up.")

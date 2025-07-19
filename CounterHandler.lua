@@ -30,3 +30,8 @@ function CounterHandler:draw()
         counter:draw()
     end
 end
+
+function CounterHandler:restartReset()
+    self.counters[CounterTypes.GRID_SUM]:setCount(1)
+    self.counters[CounterTypes.TURNS]:setCount(1)
+end
