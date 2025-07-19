@@ -169,7 +169,7 @@ end
 
 function Saver:restartReset()
     -- Delete previous gamefiles
-    love.filesystem.remove(self.contextPath)
-    love.filesystem.remove(self.firingPath)
-    love.filesystem.remove(self.gridPath)
+    os.remove(self.contextPath)
+    os.remove(self.firingPath)
+    os.remove(self.gridPath)
 end
