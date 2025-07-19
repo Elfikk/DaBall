@@ -5,6 +5,7 @@ require("CounterHandler")
 States = {
     PAUSED = {},
     PLAYING = {},
+    RESETTING = {},
 }
 
 GameHandler = {
@@ -58,6 +59,8 @@ end
 function GameHandler:mousereleased(x, y, button, istouch, presses)
     if self.currentState == States.PLAYING then
         self.contextHandler:mousereleased(x, y, button, istouch, presses)
+    elseif self.currentState == States.RESETTING then
+        self.currentState = States.PLAYING
     end
 end
 
@@ -74,8 +77,8 @@ function GameHandler:draw()
 end
 
 function GameHandler:restartReset()
+    self.currentState = States.RESETTING
     self.buttonHandler:restartReset()
     self.contextHandler:restartReset()
     self.counters:restartReset()
-    self.currentState = States.PLAYING
 end

@@ -51,11 +51,11 @@ function FiringContext:fromSave(grid_cols, grid_rows, firingX, firingY, numBalls
 end
 
 function FiringContext:restartReset()
+    self.activeBalls = {}
     local bounds = self.boundingBox:getBounds()
     local xMid = (bounds.x1 - bounds.x0) / 2
     local yMax = bounds.y1
     self.firingPosition = PositionVector:new(xMid, yMax)
-    self.activeBalls = {}
     self.firedBalls = 0
     self.activeCount = 0
     self.targetBalls = 1
@@ -63,6 +63,7 @@ function FiringContext:restartReset()
     self.newBalls = 0
     self.nextFiringPosition = nil
     self.hitBlocksTurn = 0
+    self.active = false
 end
 
 function FiringContext:update(grid)

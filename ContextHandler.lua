@@ -74,6 +74,7 @@ function ContextHandler:restartReset()
     self.contexts[Contexts.TARGET]:setBallPosition(viewportFiringPos)
     self.grid:restartReset()
     self.currentContextType = Contexts.TARGET
+    self.currentContext = self.contexts[Contexts.TARGET]
     Saver:restartReset()
 
     -- Itself

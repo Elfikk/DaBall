@@ -88,6 +88,8 @@ function TargetContext:numberBalls()
 end
 
 function TargetContext:restartReset()
+    self.aimedAt.y = self.ballPosition.y * 100
     self.numBalls = 1
     self.aiming = false
+    self.active = true
 end
