@@ -114,6 +114,8 @@ function ContextHandler:update()
             self.turns = self.turns + 1
             if self.grid:generateNextTurn(self.turns) == GameOutcome.LOSS then
                 self.currentContextType = Contexts.BASE
+                Saver:restartReset()
+                return nil
             else
                 self.gridSum = self.gridSum + self.grid:getAddedHitpoints()
             end
