@@ -11,7 +11,7 @@ States = {
 GameHandler = {
     buttonHandler = ButtonHandler,
     contextHandler = ContextHandler,
-    counters = {},
+    counters = CounterHandler,
     currentState = States.PLAYING,
 }
 
