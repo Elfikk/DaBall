@@ -1,6 +1,5 @@
 require("ButtonHandler")
 require("ContextHandler")
-require("Counter")
 require("CounterHandler")
 require("GameHandler")
 require("Saver")

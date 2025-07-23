@@ -1,5 +1,4 @@
 require("Button")
-require("ShapeDrawer")
 
 ButtonTypes = {
     PAUSE = {},

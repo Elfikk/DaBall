@@ -1,6 +1,7 @@
 require("Block")
 require("Circle")
 require("Grid")
+require("FiringContext")
 require("io")
 
 Saver = {
